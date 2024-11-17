@@ -1,46 +1,42 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addNewPost } from './postSlice'
-import { getAllUsers } from '../users/userSlice'
+// import { useSelector } from 'react-redux'
+// import { getAllUsers } from '../users/userSlice'
+import { useAddNewPostMutation } from './postSlice'
 
 const AddPostForm = () => {
-    const dispatch = useDispatch()
+    const [ addNewPost, { isLoading } ] = useAddNewPostMutation()
 
-    const users = useSelector(getAllUsers)
+    // const users = useSelector(getAllUsers)
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [userId, setUserId] = useState('')
-    const [ addRequestStatus, setRequestStatus ] = useState('idle')
 
     const onTitleChanged = e => setTitle(e.target.value)
     const onContentChanged = e => setContent(e.target.value)
-    const onAuthorChanged = e => setUserId(e.target.value)
+    // const onAuthorChanged = e => setUserId(e.target.value)
 
-    const onSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
+    const onSave = [title, content].every(Boolean) && !isLoading
 
-    const onSavePostClicked = () => {
+    const onSavePostClicked = async () => {
         if (onSave) {
             try {
-                setRequestStatus('pending')
-                dispatch(addNewPost({ title, body: content, userId })).unwrap()
+                await addNewPost({ title, body: content, userId }).unwrap()
 
                 setTitle('')
                 setContent('')
                 setUserId('')
             } catch (err) {
                 console.error('Failed to save the post', err)
-            } finally {
-                setRequestStatus('idle')
             }
         }
     }
 
-    const userOption = users.map(user => (
-        <option key={user.id} value={user.id}>
-            {user.name}
-        </option>
-    ))
+    // const userOption = users.map(user => (
+    //     <option key={user.id} value={user.id}>
+    //         {user.name}
+    //     </option>
+    // ))
 
     return (
         <section>
@@ -62,10 +58,10 @@ const AddPostForm = () => {
                     onChange={onContentChanged}
                 />
                 <label htmlFor="postAuthor">Author:</label>
-                <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+                {/* <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
                     <option value=""></option>
                     {userOption}
-                </select>
+                </select> */}
                 <button
                     type="button"
                     onClick={onSavePostClicked}

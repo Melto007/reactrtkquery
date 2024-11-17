@@ -16,7 +16,7 @@ const PostList = () => {
 
     let content
     if(isLoading) {
-        content = <p>Loading</p>
+        content = <p>Loading....</p>
     } else if(isSuccess) {
         content = orderedPosts.map((post, idx) => <PostExcerpt key={idx} post={post} />)
     } else if(isError) {

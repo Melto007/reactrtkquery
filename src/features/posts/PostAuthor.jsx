@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { getAllUsers } from '../users/userSlice'
+import { selectAllUsers } from '../users/userSlice'
 import { Link } from 'react-router-dom'
 
 const PostAuthor = ({ userId }) => {
-    const users = useSelector(getAllUsers)
+    const users = useSelector(selectAllUsers)
 
     const author = users.find(user => user.id === userId)
 
