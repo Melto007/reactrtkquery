@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { selectPostById, updatePost, deletePost } from './postSlice'
+import { selectPostById } from './postSlice'
 import { useParams, useNavigate } from 'react-router-dom'
-
-import { getAllUsers } from "../users/userSlice"
-
 import { useUpdatePostMutation, useDeletePostMutation } from './postSlice'
 
 const EditPostForm = () => {
@@ -15,7 +12,7 @@ const EditPostForm = () => {
     const [ deletePost ] = useDeletePostMutation()
 
     const post = useSelector((state) => selectPostById(state, Number(postId)))
-    const users = useSelector(getAllUsers)
+    // const users = useSelector(getAllUsers)
 
     const [title, setTitle] = useState(post?.title)
     const [content, setContent] = useState(post?.body)
@@ -31,7 +28,6 @@ const EditPostForm = () => {
 
     const onTitleChanged = e => setTitle(e.target.value)
     const onContentChanged = e => setContent(e.target.value)
-    const onAuthorChanged = e => setUserId(Number(e.target.value))
 
     const canSave = [title, content, userId].every(Boolean) && !isLoading
 
@@ -50,12 +46,12 @@ const EditPostForm = () => {
         }
     }
 
-    const usersOptions = users.map(user => (
-        <option
-            key={user.id}
-            value={user.id}
-        >{user.name}</option>
-    ))
+    // const usersOptions = users.map(user => (
+    //     <option
+    //         key={user.id}
+    //         value={user.id}
+    //     >{user.name}</option>
+    // ))
 
     const onDeletePostClicked = async () => {
         try {
@@ -82,11 +78,11 @@ const EditPostForm = () => {
                     value={title}
                     onChange={onTitleChanged}
                 />
-                <label htmlFor="postAuthor">Author:</label>
-                <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+                {/* <label htmlFor="postAuthor">Author:</label> */}
+                {/* <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
                     <option value=""></option>
                     {usersOptions}
-                </select>
+                </select> */}
                 <label htmlFor="postContent">Content:</label>
                 <textarea
                     id="postContent"
